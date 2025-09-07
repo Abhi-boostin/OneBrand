@@ -39,40 +39,42 @@ const Navbar = () => {
     });
   };
 
+  const to = (path) => (isAuthed ? path : "/loginSignUp");
+
   return (
     <>
       {/* Desktop Menu */}
       <nav className="navBar">
         <div className="logoLinkContainer">
           <div className="logoContainer">
-            <Link to="/" onClick={scrollToTop}>
+            <Link to={to("/")} onClick={scrollToTop}>
               <img src={logo} alt="Logo" />
             </Link>
           </div>
           <div className="linkContainer">
             <ul>
               <li>
-                <Link to="/" onClick={scrollToTop}>
+                <Link to={to("/")} onClick={scrollToTop}>
                   HOME
                 </Link>
               </li>
               <li>
-                <Link to="/shop" onClick={scrollToTop}>
+                <Link to={to("/shop")} onClick={scrollToTop}>
                   SHOP
                 </Link>
               </li>
               <li>
-                <Link to="/blog" onClick={scrollToTop}>
+                <Link to={to("/blog")} onClick={scrollToTop}>
                   BLOG
                 </Link>
               </li>
               <li>
-                <Link to="/about" onClick={scrollToTop}>
+                <Link to={to("/about")} onClick={scrollToTop}>
                   ABOUT
                 </Link>
               </li>
               <li>
-                <Link to="/contact" onClick={scrollToTop}>
+                <Link to={to("/contact")} onClick={scrollToTop}>
                   CONTACT
                 </Link>
               </li>
@@ -84,7 +86,7 @@ const Navbar = () => {
           <Link to={isAuthed ? "/profile" : "/loginSignUp"} onClick={scrollToTop}>
             <FaRegUser size={22} />
           </Link>
-          <Link to="/cart" onClick={scrollToTop}>
+          <Link to={to("/cart")} onClick={scrollToTop}>
             <Badge
               badgeContent={cart.items.length === 0 ? "0" : cart.items.length}
               color="primary"
@@ -110,11 +112,11 @@ const Navbar = () => {
             <RiMenu2Line size={22} onClick={toggleMobileMenu} />
           )}
           <div className="logoContainer">
-            <Link to="/">
+            <Link to={to("/")}>
               <img src={logo} alt="Logo" />
             </Link>
           </div>
-          <Link to="/cart">
+          <Link to={to("/cart")}>
             <Badge
               badgeContent={cart.items.length === 0 ? "0" : cart.items.length}
               color="primary"
@@ -132,7 +134,7 @@ const Navbar = () => {
             <div className="mobile-menuSearchBar">
               <div className="mobile-menuSearchBarContainer">
                 <input type="text" placeholder="Search products" />
-                <Link to="/shop">
+                <Link to={to("/shop")}>
                   <FiSearch size={22} onClick={toggleMobileMenu} />
                 </Link>
               </div>
@@ -140,27 +142,27 @@ const Navbar = () => {
             <div className="mobile-menuList">
               <ul>
                 <li>
-                  <Link to="/" onClick={toggleMobileMenu}>
+                  <Link to={to("/")} onClick={toggleMobileMenu}>
                     HOME
                   </Link>
                 </li>
                 <li>
-                  <Link to="/shop" onClick={toggleMobileMenu}>
+                  <Link to={to("/shop")} onClick={toggleMobileMenu}>
                     SHOP
                   </Link>
                 </li>
                 <li>
-                  <Link to="/blog" onClick={toggleMobileMenu}>
+                  <Link to={to("/blog")} onClick={toggleMobileMenu}>
                     BLOG
                   </Link>
                 </li>
                 <li>
-                  <Link to="/about" onClick={toggleMobileMenu}>
+                  <Link to={to("/about")} onClick={toggleMobileMenu}>
                     ABOUT
                   </Link>
                 </li>
                 <li>
-                  <Link to="/contact" onClick={toggleMobileMenu}>
+                  <Link to={to("/contact")} onClick={toggleMobileMenu}>
                     CONTACT
                   </Link>
                 </li>
