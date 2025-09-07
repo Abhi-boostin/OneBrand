@@ -8,6 +8,7 @@ import Popup from "./Components/PopupBanner/Popup";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./Components/Authentication/ProtectedRoute";
 import CartSync from "./Components/ShoppingCart/CartSync";
+import CartHydration from "./Components/ShoppingCart/CartHydration";
 
 const Home = lazy(() => import("./Pages/Home"));
 const About = lazy(() => import("./Pages/About"));
@@ -28,6 +29,7 @@ const App = () => {
   return (
     <>
       <Popup />
+      <CartHydration />
       <CartSync />
       <ScrollToTop />
       <BrowserRouter>
