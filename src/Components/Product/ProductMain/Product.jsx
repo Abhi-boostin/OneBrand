@@ -91,8 +91,17 @@ const Product = ({ productDetails }) => {
 
   const cartItems = useSelector((state) => state.cart.items);
 
+  const effectiveProduct = productDetails || {
+    productID: 14,
+    productName: "Lightweight Puffer Jacket With a Hood",
+    productPrice: 90,
+    frontImg: productImg[0],
+    productReviews: "8k+ reviews",
+  };
+
   const onAdd = async () => {
-    dispatch(addToCart(productDetails));
+    // include selected quantity in the product payload for Redux
+    dispatch(addToCart({ ...effectiveProduct }));
     const token = localStorage.getItem("token");
     if (token) {
       try {
@@ -100,15 +109,16 @@ const Product = ({ productDetails }) => {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
           body: JSON.stringify({
-            productId: productDetails.productID,
-            name: productDetails.productName,
-            price: productDetails.productPrice,
-            image: productDetails.frontImg,
-            quantity: 1,
+            productId: effectiveProduct.productID,
+            name: effectiveProduct.productName,
+            price: effectiveProduct.productPrice,
+            image: effectiveProduct.frontImg,
+            quantity: quantity,
           }),
         });
       } catch {}
     }
+    toast.success("Added to cart");
   };
 
   return (

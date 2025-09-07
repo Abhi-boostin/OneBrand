@@ -7,6 +7,7 @@ import ScrollToTop from "./Components/ScrollButton/ScrollToTop";
 import Popup from "./Components/PopupBanner/Popup";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./Components/Authentication/ProtectedRoute";
+import CartSync from "./Components/ShoppingCart/CartSync";
 
 const Home = lazy(() => import("./Pages/Home"));
 const About = lazy(() => import("./Pages/About"));
@@ -27,6 +28,7 @@ const App = () => {
   return (
     <>
       <Popup />
+      <CartSync />
       <ScrollToTop />
       <BrowserRouter>
         <Header />
