@@ -98,24 +98,8 @@ const Product = ({ productDetails }) => {
   };
 
   const onAdd = async () => {
-    // include selected quantity in the product payload for Redux
+    // Only update Redux - CartSync will handle backend sync
     dispatch(addToCart({ ...effectiveProduct }));
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        await fetch(`${API_BASE}/api/cart/add`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-          body: JSON.stringify({
-            productId: effectiveProduct.productID,
-            name: effectiveProduct.productName,
-            price: effectiveProduct.productPrice,
-            image: effectiveProduct.frontImg,
-            quantity: quantity,
-          }),
-        });
-      } catch {}
-    }
     toast.success("Added to cart");
   };
 

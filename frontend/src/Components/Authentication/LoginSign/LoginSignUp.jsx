@@ -3,6 +3,7 @@ import "./LoginSignUp.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCart } from "../../../Features/Cart/cartSlice";
+import { useAuth } from "../AuthContext";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
@@ -19,6 +20,7 @@ const LoginSignUp = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { login } = useAuth();
 
   const handleTab = (tab) => {
     setActiveTab(tab);
@@ -47,7 +49,7 @@ const LoginSignUp = () => {
     } catch {}
   };
 
-  const login = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const res = await fetch(`${API_BASE}/api/auth/login`, {
       method: "POST",
@@ -57,12 +59,13 @@ const LoginSignUp = () => {
     const data = await res.json();
     if (!res.ok) return alert(data.message || "Login failed");
     localStorage.setItem("token", data.token);
+    login(data.token, data.user); // Use auth context
     await hydrateCart();
     alert("Logged in successfully");
     navigate("/");
   };
 
-  const register = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const res = await fetch(`${API_BASE}/api/auth/register`, {
       method: "POST",
@@ -75,7 +78,7 @@ const LoginSignUp = () => {
     alert("OTP sent to email. Please verify.");
   };
 
-  const verifyOtp = async (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
     const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
       method: "POST",
@@ -85,6 +88,7 @@ const LoginSignUp = () => {
     const data = await res.json();
     if (!res.ok) return alert(data.message || "OTP verification failed");
     localStorage.setItem("token", data.token);
+    login(data.token, data.user); // Use auth context
     await hydrateCart();
     alert("Account verified and logged in");
     navigate("/");
@@ -107,7 +111,7 @@ const LoginSignUp = () => {
 
             {activeTab === "tabButton1" && (
               <div className="loginSignUpTabsContentLogin">
-                <form onSubmit={login}>
+                <form onSubmit={handleLogin}>
                   <input type="email" placeholder="Email address *" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required />
                   <input type="password" placeholder="Password *" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required />
                   <div className="loginSignUpForgetPass">
@@ -134,7 +138,7 @@ const LoginSignUp = () => {
             {activeTab === "tabButton2" && (
               <div className="loginSignUpTabsContentRegister">
                 {registerStep === "enter" && (
-                  <form onSubmit={register}>
+                  <form onSubmit={handleRegister}>
                     <input type="text" placeholder="Username *" value={registerUsername} onChange={(e) => setRegisterUsername(e.target.value)} required />
                     <input type="email" placeholder="Email address *" value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} required />
                     <input type="password" placeholder="Password *" value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} required />
@@ -146,7 +150,7 @@ const LoginSignUp = () => {
                   </form>
                 )}
                 {registerStep === "verify" && (
-                  <form onSubmit={verifyOtp}>
+                  <form onSubmit={handleVerifyOtp}>
                     <input type="text" placeholder="Enter OTP *" value={otp} onChange={(e) => setOtp(e.target.value)} required />
                     <button>Verify OTP</button>
                   </form>

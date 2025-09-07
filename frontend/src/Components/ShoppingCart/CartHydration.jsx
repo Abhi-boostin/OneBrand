@@ -1,20 +1,24 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCart } from "../../Features/Cart/cartSlice";
+import { useAuth } from "../Authentication/AuthContext";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
 const CartHydration = () => {
   const dispatch = useDispatch();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    if (!isAuthenticated) return;
+
     const token = localStorage.getItem("token");
     if (!token) return;
 
     // Fetch user's cart from backend
     const fetchCart = async () => {
       try {
-        const response = await fetch(`${API_BASE}/api/cart/`, {
+        const response = await fetch(`${API_BASE}/api/cart`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -42,7 +46,7 @@ const CartHydration = () => {
     };
 
     fetchCart();
-  }, [dispatch]);
+  }, [dispatch, isAuthenticated]);
 
   return null;
 };

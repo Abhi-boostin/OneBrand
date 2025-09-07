@@ -21,7 +21,7 @@ const CartSync = () => {
       image: i.frontImg,
       quantity: i.quantity,
     }));
-    fetch(`${API_BASE}/api/cart/set`, {
+    fetch(`${API_BASE}/api/cart`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ items: payload }),

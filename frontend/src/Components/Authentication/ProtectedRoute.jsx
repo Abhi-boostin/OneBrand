@@ -1,35 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
-
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
+import { useAuth } from "./AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const [status, setStatus] = useState("checking"); // checking | authed | denied
+  const { isAuthenticated, isLoading } = useAuth();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setStatus("denied");
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch(`${API_BASE}/api/auth/me`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!cancelled) setStatus(res.ok ? "authed" : "denied");
-      } catch {
-        if (!cancelled) setStatus("denied");
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  if (isLoading) {
+    return <div style={{ padding: 20 }}>Loading...</div>;
+  }
 
-  if (status === "checking") return null;
-  if (status === "denied") return <Navigate to="/loginSignUp" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/loginSignUp" replace />;
+  }
+
   return children;
 };
 

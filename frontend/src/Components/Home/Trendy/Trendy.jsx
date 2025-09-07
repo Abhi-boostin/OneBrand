@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import StoreData from "../../../Data/StoreData";
 import { FiHeart } from "react-icons/fi";
 import { FaStar, FaCartPlus } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
@@ -45,23 +46,9 @@ const Trendy = () => {
   };
 
   const onAdd = async (product) => {
+    // Only update Redux - CartSync will handle backend sync
     dispatch(addToCart(product));
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        await fetch(`${API_BASE}/api/cart/add`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-          body: JSON.stringify({
-            productId: product.productID,
-            name: product.productName,
-            price: product.productPrice,
-            image: product.frontImg,
-            quantity: 1,
-          }),
-        });
-      } catch {}
-    }
+    toast.success("Product added to cart!");
   };
 
   return (
