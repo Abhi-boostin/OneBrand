@@ -29,6 +29,9 @@ let StoreData = [
     productName: "Cropped Faux Leather Jacket",
     productPrice: 29,
     productReviews: "8k+ reviews",
+    category: "Jackets",
+    brand: "Balmain",
+    sizes: ["S", "M", "L", "XL"],
   },
   {
     productID: 2,
@@ -37,6 +40,9 @@ let StoreData = [
     productName: "Calvin Shorts",
     productPrice: 62,
     productReviews: "2k+ reviews",
+    category: "Shorts",
+    brand: "Adidas",
+    sizes: ["XS", "S", "M", "L"],
   },
   {
     productID: 3,
@@ -45,6 +51,9 @@ let StoreData = [
     productName: "Shirt In Botanical Cheetah Print",
     productPrice: 60,
     productReviews: "7k+ reviews",
+    category: "T-Shirts & Tops",
+    brand: "Zara",
+    sizes: ["S", "M", "L", "XL", "XXL"],
   },
   {
     productID: 4,
@@ -53,6 +62,9 @@ let StoreData = [
     productName: "Cotton Jersey T-Shirt",
     productPrice: 17,
     productReviews: "5k+ reviews",
+    category: "T-Shirts & Tops",
+    brand: "Zara",
+    sizes: ["XS", "S", "M", "L"],
   },
   {
     productID: 5,
@@ -61,6 +73,9 @@ let StoreData = [
     productName: "Cableknit Shawl",
     productPrice: 100,
     productReviews: "9k+ reviews",
+    category: "Jumpers & Cardigans",
+    brand: "Balenciaga",
+    sizes: ["S", "M", "L"],
   },
   {
     productID: 6,
@@ -69,6 +84,9 @@ let StoreData = [
     productName: "Colorful Jacket",
     productPrice: 69,
     productReviews: "1k+ reviews",
+    category: "Jackets",
+    brand: "Burberry",
+    sizes: ["M", "L", "XL", "XXL"],
   },
   {
     productID: 7,
@@ -77,6 +95,9 @@ let StoreData = [
     productName: "Zessi Dresses",
     productPrice: 99,
     productReviews: "3k+ reviews",
+    category: "Dresses",
+    brand: "Kenzo",
+    sizes: ["XS", "S", "M", "L"],
   },
   {
     productID: 8,
@@ -85,6 +106,9 @@ let StoreData = [
     productName: "Kirby T-Shirt",
     productPrice: 37,
     productReviews: "4k+ reviews",
+    category: "T-Shirts & Tops",
+    brand: "Givenchy",
+    sizes: ["S", "M", "L", "XL"],
   },
   {
     productID: 9,
@@ -92,6 +116,9 @@ let StoreData = [
     productName: "Hosking Blue Area Rug",
     productPrice: 29,
     productReviews: "8k+ reviews",
+    category: "Home Decor",
+    brand: "Balmain",
+    sizes: ["One Size"],
   },
   {
     productID: 10,
@@ -99,6 +126,9 @@ let StoreData = [
     productName: "Hanneman Pouf",
     productPrice: 92,
     productReviews: "5k+ reviews",
+    category: "Home Decor",
+    brand: "Balenciaga",
+    sizes: ["One Size"],
   },
   {
     productID: 11,
@@ -106,6 +136,9 @@ let StoreData = [
     productName: "Cushion Futon Slipcover",
     productPrice: 25,
     productReviews: "1k+ reviews",
+    category: "Home Decor",
+    brand: "Zara",
+    sizes: ["One Size"],
   },
   {
     productID: 12,
@@ -113,6 +146,9 @@ let StoreData = [
     productName: "Hub Accent Mirror",
     productPrice: 27,
     productReviews: "7k+ reviews",
+    category: "Home Decor",
+    brand: "Burberry",
+    sizes: ["One Size"],
   },
   {
     productID: 13,
@@ -120,6 +156,9 @@ let StoreData = [
     productName: "Bold Male Black Analog",
     productPrice: 39,
     productReviews: "71+ reviews",
+    category: "Accessories",
+    brand: "Kenzo",
+    sizes: ["One Size"],
   },
 ];
 

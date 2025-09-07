@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./ShopDetails.css";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../../../Features/Cart/cartSlice";
 
 import Filter from "../Filters/Filter";
@@ -9,18 +9,21 @@ import { Link } from "react-router-dom";
 import StoreData from "../../../Data/StoreData";
 import { FiHeart } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
-import { IoFilterSharp, IoClose } from "react-icons/io5";
-import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
+import { IoFilterSharp } from "react-icons/io5";
 import { FaCartPlus } from "react-icons/fa";
 import toast from "react-hot-toast";
-
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
 const ShopDetails = () => {
   const dispatch = useDispatch();
 
   const [wishList, setWishList] = useState({});
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    categories: [],
+    sizes: [],
+    brands: [],
+    priceRange: [17, 100],
+  });
 
   const handleWishlistClick = (productID) => {
     setWishList((prevWishlist) => ({
@@ -44,68 +47,62 @@ const ShopDetails = () => {
     setIsDrawerOpen(false);
   };
 
-  const cartItems = useSelector((state) => state.cart.items);
-
-  const handleAddToCart = (product) => {
-    const productInCart = cartItems.find(
-      (item) => item.productID === product.productID
-    );
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
-      });
-    } else {
-      dispatch(addToCart(product));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
-    }
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
   };
 
-  const onAdd = async (product) => {
-    dispatch(addToCart(product));
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        await fetch(`${API_BASE}/api/cart/add`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-          body: JSON.stringify({
-            productId: product.productID,
-            name: product.productName,
-            price: product.productPrice,
-            image: product.frontImg,
-            quantity: 1,
-          }),
-        });
-      } catch {}
+  // Filter products based on selected filters
+  const filteredProducts = StoreData.filter((product) => {
+    // Category filter
+    if (
+      filters.categories.length > 0 &&
+      !filters.categories.includes(product.category)
+    ) {
+      return false;
     }
+
+    // Size filter
+    if (
+      filters.sizes.length > 0 &&
+      !filters.sizes.some((size) => product.sizes.includes(size))
+    ) {
+      return false;
+    }
+
+    // Brand filter
+    if (
+      filters.brands.length > 0 &&
+      !filters.brands.includes(product.brand)
+    ) {
+      return false;
+    }
+
+    // Price filter
+    if (
+      product.productPrice < filters.priceRange[0] ||
+      product.productPrice > filters.priceRange[1]
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+    toast.success("Product added to cart!");
   };
 
   return (
     <>
       <div className="shopDetails">
         <div className="shopDetailMain">
+          {/* Left Side - Filters */}
           <div className="shopDetails__left">
-            <Filter />
+            <Filter onFilterChange={handleFilterChange} />
           </div>
+
+          {/* Right Side - Products */}
           <div className="shopDetails__right">
             <div className="shopDetailsSorting">
               <div className="shopDetailsBreadcrumbLink">
@@ -138,10 +135,12 @@ const ShopDetails = () => {
                 </div>
               </div>
             </div>
+
+            {/* Product List */}
             <div className="shopDetailsProducts">
               <div className="shopDetailsProductsContainer">
-                {StoreData.slice(0, 6).map((product) => (
-                  <div className="sdProductContainer">
+                {filteredProducts.map((product) => (
+                  <div key={product.productID} className="sdProductContainer">
                     <div className="sdProductImages">
                       <Link to="/Product" onClick={scrollToTop}>
                         <img
@@ -159,15 +158,17 @@ const ShopDetails = () => {
                         Add to Cart
                       </h4>
                     </div>
+
                     <div
                       className="sdProductImagesCart"
                       onClick={() => handleAddToCart(product)}
                     >
                       <FaCartPlus />
                     </div>
+
                     <div className="sdProductInfo">
                       <div className="sdProductCategoryWishlist">
-                        <p>Dresses</p>
+                        <p>{product.category}</p>
                         <FiHeart
                           onClick={() => handleWishlistClick(product.productID)}
                           style={{
@@ -178,61 +179,39 @@ const ShopDetails = () => {
                           }}
                         />
                       </div>
+
                       <div className="sdProductNameInfo">
                         <Link to="/product" onClick={scrollToTop}>
                           <h5>{product.productName}</h5>
                         </Link>
-
                         <p>${product.productPrice}</p>
+
+                        {/* Rating and Reviews */}
                         <div className="sdProductRatingReviews">
                           <div className="sdProductRatingStar">
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
+                            {[...Array(5)].map((_, i) => (
+                              <FaStar
+                                key={i}
+                                color={
+                                  i < product.rating ? "#FEC78A" : "#e0e0e0"
+                                }
+                                size={10}
+                              />
+                            ))}
                           </div>
-                          <span>{product.productReviews}</span>
+                          <span>({product.reviews} reviews)</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-            <div className="shopDetailsPagination">
-              <div className="sdPaginationPrev">
-                <p onClick={scrollToTop}>
-                  <FaAngleLeft />
-                  Prev
-                </p>
-              </div>
-              <div className="sdPaginationNumber">
-                <div className="paginationNum">
-                  <p onClick={scrollToTop}>1</p>
-                  <p onClick={scrollToTop}>2</p>
-                  <p onClick={scrollToTop}>3</p>
-                  <p onClick={scrollToTop}>4</p>
-                </div>
-              </div>
-              <div className="sdPaginationNext">
-                <p onClick={scrollToTop}>
-                  Next
-                  <FaAngleRight />
-                </p>
+
+                {filteredProducts.length === 0 && (
+                  <p className="noProducts">No products found.</p>
+                )}
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      {/* Drawer */}
-      <div className={`filterDrawer ${isDrawerOpen ? "open" : ""}`}>
-        <div className="drawerHeader">
-          <p>Filter By</p>
-          <IoClose onClick={closeDrawer} className="closeButton" size={26} />
-        </div>
-        <div className="drawerContent">
-          <Filter />
         </div>
       </div>
     </>
