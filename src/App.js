@@ -20,9 +20,10 @@ const ResetPass = lazy(() => import("./Components/Authentication/Reset/ResetPass
 const BlogDetails = lazy(() => import("./Components/Blog/BlogDetails/BlogDetails"));
 const TermsConditions = lazy(() => import("./Pages/TermsConditions"));
 const ShoppingCart = lazy(() => import("./Components/ShoppingCart/ShoppingCart"));
+const Profile = lazy(() => import("./Components/Authentication/Profile"));
 
 const App = () => {
-  const hasToken = Boolean(localStorage.getItem("token"));
+  const isAuthed = () => Boolean(localStorage.getItem("token"));
   return (
     <>
       <Popup />
@@ -31,10 +32,28 @@ const App = () => {
         <Header />
         <Suspense fallback={<div style={{ padding: 20 }}>Loading...</div>}>
           <Routes>
-            <Route path="/loginSignUp" element={<Authentication />} />
+            <Route
+              path="/loginSignUp"
+              element={isAuthed() ? <Navigate to="/" replace /> : <Authentication />}
+            />
             <Route path="/resetPassword" element={<ResetPass />} />
 
-            <Route path="/" element={hasToken ? <Home /> : <Navigate to="/loginSignUp" replace />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/about"
               element={

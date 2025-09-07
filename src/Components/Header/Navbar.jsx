@@ -25,6 +25,8 @@ const Navbar = () => {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const isAuthed = Boolean(localStorage.getItem("token"));
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
     document.body.style.overflow = mobileMenuOpen ? "auto" : "hidden";
@@ -79,7 +81,7 @@ const Navbar = () => {
         </div>
         <div className="iconContainer">
           <FiSearch size={22} onClick={scrollToTop} />
-          <Link to="/loginSignUp" onClick={scrollToTop}>
+          <Link to={isAuthed ? "/profile" : "/loginSignUp"} onClick={scrollToTop}>
             <FaRegUser size={22} />
           </Link>
           <Link to="/cart" onClick={scrollToTop}>
@@ -168,7 +170,7 @@ const Navbar = () => {
 
           <div className="mobile-menuFooter">
             <div className="mobile-menuFooterLogin">
-              <Link to="/loginSignUp" onClick={toggleMobileMenu}>
+              <Link to={isAuthed ? "/profile" : "/loginSignUp"} onClick={toggleMobileMenu}>
                 <FaRegUser />
                 <p>My Account</p>
               </Link>

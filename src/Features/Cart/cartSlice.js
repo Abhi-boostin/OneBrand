@@ -11,8 +11,19 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCart(state, action) {
+      const items = action.payload || [];
+      state.items = items;
+      state.totalAmount = items.reduce(
+        (sum, item) => sum + (item.productPrice || 0) * (item.quantity || 0),
+        0
+      );
+    },
     addToCart(state, action) {
       const product = action.payload;
+      if (!product || product.productID === undefined || product.productPrice === undefined) {
+        return;
+      }
       const existingItem = state.items.find(
         (item) => item.productID === product.productID
       );
@@ -27,20 +38,15 @@ const cartSlice = createSlice({
       }
     },
     updateQuantity(state, action) {
-      const { productID, quantity } = action.payload;
+      const { productID, quantity } = action.payload || {};
       const itemToUpdate = state.items.find(
         (item) => item.productID === productID
       );
-      if (itemToUpdate) {
-        const difference = quantity - itemToUpdate.quantity;
-        if (quantity <= MAX_QUANTITY) {
-          itemToUpdate.quantity = quantity;
-          state.totalAmount += difference * itemToUpdate.productPrice;
-        } else {
-          itemToUpdate.quantity = MAX_QUANTITY;
-          state.totalAmount +=
-            (MAX_QUANTITY - itemToUpdate.quantity) * itemToUpdate.productPrice;
-        }
+      if (itemToUpdate && typeof quantity === "number") {
+        const clampedQty = Math.min(Math.max(quantity, 1), MAX_QUANTITY);
+        const difference = clampedQty - itemToUpdate.quantity;
+        itemToUpdate.quantity = clampedQty;
+        state.totalAmount += difference * itemToUpdate.productPrice;
       }
     },
     removeFromCart(state, action) {
@@ -58,7 +64,7 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity } = cartSlice.actions;
+export const { setCart, addToCart, removeFromCart, updateQuantity } = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.items;
 export const selectCartTotalAmount = (state) => state.cart.totalAmount;

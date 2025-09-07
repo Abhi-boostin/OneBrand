@@ -22,7 +22,9 @@ import toast from "react-hot-toast";
 
 import "./Product.css";
 
-const Product = () => {
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
+
+const Product = ({ productDetails }) => {
   // Product images Gallery
 
   const productImg = [product1, product2, product3, product4];
@@ -89,44 +91,23 @@ const Product = () => {
 
   const cartItems = useSelector((state) => state.cart.items);
 
-  const handleAddToCart = () => {
-    const productDetails = {
-      productID: 14,
-      productName: "Lightweight Puffer Jacket",
-      productPrice: 90,
-      frontImg: productImg[0],
-      productReviews: "8k+ reviews",
-    };
-
-    const productInCart = cartItems.find(
-      (item) => item.productID === productDetails.productID
-    );
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
-      });
-    } else {
-      dispatch(addToCart(productDetails));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
+  const onAdd = async () => {
+    dispatch(addToCart(productDetails));
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        await fetch(`${API_BASE}/api/cart/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({
+            productId: productDetails.productID,
+            name: productDetails.productName,
+            price: productDetails.productPrice,
+            image: productDetails.frontImg,
+            quantity: 1,
+          }),
+        });
+      } catch {}
     }
   };
 
@@ -261,7 +242,7 @@ const Product = () => {
                 <button onClick={increment}>+</button>
               </div>
               <div className="productCartBtn">
-                <button onClick={handleAddToCart}>Add to Cart</button>
+                <button onClick={onAdd}>Add to Cart</button>
               </div>
             </div>
             <div className="productWishShare">

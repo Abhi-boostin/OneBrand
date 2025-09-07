@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./LoginSignUp.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCart } from "../../../Features/Cart/cartSlice";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
@@ -16,9 +18,33 @@ const LoginSignUp = () => {
   const [registerStep, setRegisterStep] = useState("enter"); // enter -> verify
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleTab = (tab) => {
     setActiveTab(tab);
+  };
+
+  const hydrateCart = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/api/cart`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (res.ok && Array.isArray(data.items)) {
+        dispatch(
+          setCart(
+            data.items.map((i) => ({
+              productID: i.productId,
+              productName: i.name,
+              productPrice: i.price,
+              frontImg: i.image,
+              quantity: i.quantity,
+            }))
+          )
+        );
+      }
+    } catch {}
   };
 
   const login = async (e) => {
@@ -31,6 +57,7 @@ const LoginSignUp = () => {
     const data = await res.json();
     if (!res.ok) return alert(data.message || "Login failed");
     localStorage.setItem("token", data.token);
+    await hydrateCart();
     alert("Logged in successfully");
     navigate("/");
   };
@@ -58,6 +85,7 @@ const LoginSignUp = () => {
     const data = await res.json();
     if (!res.ok) return alert(data.message || "OTP verification failed");
     localStorage.setItem("token", data.token);
+    await hydrateCart();
     alert("Account verified and logged in");
     navigate("/");
   };

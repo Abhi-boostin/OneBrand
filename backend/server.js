@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import config from "./src/config/env.js";
 import authRoutes from "./src/routes/auth.routes.js";
+import cartRoutes from "./src/routes/cart.routes.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ mongoose
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.use("/api/auth", authRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err);

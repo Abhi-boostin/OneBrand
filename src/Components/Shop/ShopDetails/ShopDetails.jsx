@@ -14,6 +14,8 @@ import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 import { FaCartPlus } from "react-icons/fa";
 import toast from "react-hot-toast";
 
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
+
 const ShopDetails = () => {
   const dispatch = useDispatch();
 
@@ -74,6 +76,26 @@ const ShopDetails = () => {
           secondary: "#07bc0c",
         },
       });
+    }
+  };
+
+  const onAdd = async (product) => {
+    dispatch(addToCart(product));
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        await fetch(`${API_BASE}/api/cart/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({
+            productId: product.productID,
+            name: product.productName,
+            price: product.productPrice,
+            image: product.frontImg,
+            quantity: 1,
+          }),
+        });
+      } catch {}
     }
   };
 

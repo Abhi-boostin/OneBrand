@@ -8,6 +8,8 @@ import { FiHeart } from "react-icons/fi";
 import { FaStar, FaCartPlus } from "react-icons/fa";
 import toast from "react-hot-toast";
 
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
+
 const Trendy = () => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("tab1");
@@ -45,36 +47,23 @@ const Trendy = () => {
 
   const cartItems = useSelector((state) => state.cart.items);
 
-  const handleAddToCart = (product) => {
-    const productInCart = cartItems.find(
-      (item) => item.productID === product.productID
-    );
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
-      });
-    } else {
-      dispatch(addToCart(product));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
+  const onAdd = async (product) => {
+    dispatch(addToCart(product));
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        await fetch(`${API_BASE}/api/cart/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({
+            productId: product.productID,
+            name: product.productName,
+            price: product.productPrice,
+            image: product.frontImg,
+            quantity: 1,
+          }),
+        });
+      } catch {}
     }
   };
 
@@ -130,13 +119,13 @@ const Trendy = () => {
                           className="trendyProduct_back"
                         />
                       </Link>
-                      <h4 onClick={() => handleAddToCart(product)}>
+                      <h4 onClick={() => onAdd(product)}>
                         Add to Cart
                       </h4>
                     </div>
                     <div
                       className="trendyProductImagesCart"
-                      onClick={() => handleAddToCart(product)}
+                      onClick={() => onAdd(product)}
                     >
                       <FaCartPlus />
                     </div>
@@ -196,13 +185,13 @@ const Trendy = () => {
                             className="trendyProduct_back"
                           />
                         </Link>
-                        <h4 onClick={() => handleAddToCart(product)}>
+                        <h4 onClick={() => onAdd(product)}>
                           Add to Cart
                         </h4>
                       </div>
                       <div
                         className="trendyProductImagesCart"
-                        onClick={() => handleAddToCart(product)}
+                        onClick={() => onAdd(product)}
                       >
                         <FaCartPlus />
                       </div>
@@ -264,13 +253,13 @@ const Trendy = () => {
                             className="trendyProduct_back"
                           />
                         </Link>
-                        <h4 onClick={() => handleAddToCart(product)}>
+                        <h4 onClick={() => onAdd(product)}>
                           Add to Cart
                         </h4>
                       </div>
                       <div
                         className="trendyProductImagesCart"
-                        onClick={() => handleAddToCart(product)}
+                        onClick={() => onAdd(product)}
                       >
                         <FaCartPlus />
                       </div>
@@ -332,13 +321,13 @@ const Trendy = () => {
                             className="trendyProduct_back"
                           />
                         </Link>
-                        <h4 onClick={() => handleAddToCart(product)}>
+                        <h4 onClick={() => onAdd(product)}>
                           Add to Cart
                         </h4>
                       </div>
                       <div
                         className="trendyProductImagesCart"
-                        onClick={() => handleAddToCart(product)}
+                        onClick={() => onAdd(product)}
                       >
                         <FaCartPlus />
                       </div>
