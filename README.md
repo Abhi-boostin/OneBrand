@@ -1,11 +1,11 @@
-# UOMO E-commerce Website Using ReactJS
+# OneBrand E-commerce Website (React)
 
-![uomo-ecommerce-website-reactjs](https://socialify.git.ci/shakti177/uomo-ecommerce-website-reactjs/image?custom_language=React&forks=1&issues=1&language=1&name=1&owner=1&pattern=Solid&pulls=1&stargazers=1&theme=Auto)
+
 
 ## 📌 Live Demo
-https://uomo-ecommerce-website.netlify.app/
+Coming soon
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/fec4a869-298c-4e9c-8df6-cb6f132f7bd8/deploy-status)](https://app.netlify.com/sites/uomo-ecommerce-website/deploys)
+
 
 ## 😎 Features
 
@@ -79,10 +79,10 @@ From your command line, first clone this repo:
 
 ```
 # Clone this repository
-$ https://github.com/shakti177/uomo-ecommerce-website-reactjs.git
+$ git clone https://github.com/Abhi-boostin/OneBrand.git
 
 # Go into the repository
-$ cd uomo-ecommerce-website-reactjs
+$ cd OneBrand
 
 # Remove current origin repository
 $ git remote remove origin
@@ -101,13 +101,15 @@ $ npm start
 
 ## Star History
 
-<a href="https://www.star-history.com/#shakti177/uomo-ecommerce-website-reactjs&Timeline">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=shakti177/uomo-ecommerce-website-reactjs&type=Timeline&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=shakti177/uomo-ecommerce-website-reactjs&type=Timeline" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=shakti177/uomo-ecommerce-website-reactjs&type=Timeline" />
- </picture>
-</a>
+
+
+## 🧑‍💻 Author
+- Abhimanyu Singh
+- Portfolio: https://abhifolio.vercel.app/
+- GitHub: https://github.com/Abhi-boostin
+- LinkedIn: https://www.linkedin.com/in/abhiboostin/
+- X: https://x.com/Abhiboostin
+- Email: abhimanyusinghworks@gmail.com
 
 👨‍💻 Happy coding!
 ---

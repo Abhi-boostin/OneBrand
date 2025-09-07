@@ -37,16 +37,16 @@ const Footer = () => {
             <p>1418 River Drive, Suite 35 Cottonhall, CA 9622 United States</p>
 
             <div className="footer_address">
-              <strong> sale@uomo.com </strong>
+              <strong> abhimanyusinghworks@gmail.com </strong>
               <strong> +1 246-345-0695 </strong>
             </div>
 
             <div className="social_links">
-              <FaFacebookF />
-              <FaXTwitter />
-              <FaInstagram />
-              <FaYoutube />
-              <FaPinterest />
+              <a href="https://abhifolio.vercel.app/" target="_blank" rel="noreferrer" title="Portfolio"><FaFacebookF /></a>
+              <a href="https://x.com/Abhiboostin" target="_blank" rel="noreferrer" title="X (Twitter)"><FaXTwitter /></a>
+              <a href="https://www.linkedin.com/in/abhiboostin/" target="_blank" rel="noreferrer" title="LinkedIn"><FaInstagram /></a>
+              <a href="https://github.com/Abhi-boostin" target="_blank" rel="noreferrer" title="GitHub"><FaYoutube /></a>
+              <a href="https://abhifolio.vercel.app/" target="_blank" rel="noreferrer" title="Portfolio"><FaPinterest /></a>
             </div>
           </div>
 
@@ -139,14 +139,14 @@ const Footer = () => {
         </div>
         <div className="footer_bottom">
           <p>
-            © {getCurrentYear()} Uomo. All Rights Reserved | Made By{" "}
+            © {getCurrentYear()} OneBrand. All Rights Reserved | Made By{" "}
             <a
-              href="https://github.com/shakti177"
+              href="https://github.com/Abhi-boostin"
               target="_blank"
               rel="noreferrer"
               style={{ color: "#C22928", textDecoration: "none" }}
             >
-              Shakti Tamrakar
+              Abhimanyu Singh
             </a>{" "}
             with ❤️
           </p>
