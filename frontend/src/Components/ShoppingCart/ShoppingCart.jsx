@@ -14,8 +14,6 @@ import { Link } from "react-router-dom";
 
 import success from "../../Assets/success.png";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
-
 const ShoppingCart = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
@@ -29,50 +27,26 @@ const ShoppingCart = () => {
     }
   };
 
-  const updateBackendQuantity = async (productID, quantity) => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    try {
-      await fetch(`${API_BASE}/api/cart/update`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ productId: productID, quantity }),
-      });
-    } catch {}
-  };
-
-  const removeBackendItem = async (productID) => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    try {
-      await fetch(`${API_BASE}/api/cart/remove`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ productId: productID }),
-      });
-    } catch {}
-  };
-
-  const clearBackendCart = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    try {
-      const res = await fetch(`${API_BASE}/api/cart/clear`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (res.ok && Array.isArray(data.items)) {
-        dispatch(setCart([]));
-      }
-    } catch {}
-  };
+  // Remove all backend API functions - CartSync will handle everything
+  // const updateBackendQuantity = async (productID, quantity) => { ... }
+  // const removeBackendItem = async (productID) => { ... }
+  // const clearBackendCart = async () => { ... }
 
   const handleQuantityChange = (productId, quantity) => {
     if (quantity >= 1 && quantity <= 20) {
       dispatch(updateQuantity({ productID: productId, quantity: quantity }));
-      updateBackendQuantity(productId, quantity);
+      // CartSync will automatically sync to backend
     }
+  };
+
+  const handleRemoveItem = (productId) => {
+    dispatch(removeFromCart(productId));
+    // CartSync will automatically sync to backend
+  };
+
+  const handleClearCart = () => {
+    dispatch(setCart([]));
+    // CartSync will automatically sync to backend
   };
 
   const totalPrice = useSelector(selectCartTotalAmount);
@@ -253,10 +227,7 @@ const ShoppingCart = () => {
                             </td>
                             <td data-label="">
                               <MdOutlineClose
-                                onClick={() => {
-                                  dispatch(removeFromCart(item.productID));
-                                  removeBackendItem(item.productID);
-                                }}
+                                onClick={() => handleRemoveItem(item.productID)}
                               />
                             </td>
                           </tr>
@@ -301,7 +272,7 @@ const ShoppingCart = () => {
                             <button
                               onClick={(e) => {
                                 e.preventDefault();
-                                clearBackendCart();
+                                handleClearCart();
                               }}
                               className="shopCartFooterbutton"
                             >
@@ -371,10 +342,7 @@ const ShoppingCart = () => {
                                 <div className="shoppingBagTableMobileItemsDetailTotal">
                                   <MdOutlineClose
                                     size={20}
-                                    onClick={() => {
-                                      dispatch(removeFromCart(item.productID));
-                                      removeBackendItem(item.productID);
-                                    }}
+                                    onClick={() => handleRemoveItem(item.productID)}
                                   />
                                   <p>${item.quantity * item.productPrice}</p>
                                 </div>
@@ -400,7 +368,7 @@ const ShoppingCart = () => {
                             <button
                               onClick={(e) => {
                                 e.preventDefault();
-                                clearBackendCart();
+                                handleClearCart();
                               }}
                               className="shopCartFooterbutton"
                             >
