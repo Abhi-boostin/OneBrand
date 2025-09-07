@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState, Suspense, lazy } from "react";
+import "./HeroSection.css";
+import { Link } from "react-router-dom";
 // Defer heavy three.js modules
 const Canvas = lazy(() => import("@react-three/fiber").then(m => ({ default: m.Canvas })));
 const OrbitControls = lazy(() => import("@react-three/drei").then(m => ({ default: m.OrbitControls })));
-
-import "./HeroSection.css";
 const Model = lazy(() => import("../../Model/Model").then(m => ({ default: m.Model })));
-import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const [tshirtColor, setTshirtColor] = useState("red");
