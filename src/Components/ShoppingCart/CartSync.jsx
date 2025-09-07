@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";

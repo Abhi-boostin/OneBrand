@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import "./Trendy.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../../../Features/Cart/cartSlice";
 import { Link } from "react-router-dom";
 import StoreData from "../../../Data/StoreData";
 import { FiHeart } from "react-icons/fi";
 import { FaStar, FaCartPlus } from "react-icons/fa";
-import toast from "react-hot-toast";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
@@ -44,8 +43,6 @@ const Trendy = () => {
     );
     return reviewsB - reviewsA;
   };
-
-  const cartItems = useSelector((state) => state.cart.items);
 
   const onAdd = async (product) => {
     dispatch(addToCart(product));

@@ -45,7 +45,7 @@ const LimitedEdition = () => {
 
   const cartItems = useSelector((state) => state.cart.items);
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = async (product) => {
     const productInCart = cartItems.find(
       (item) => item.productID === product.productID
     );
@@ -64,6 +64,22 @@ const LimitedEdition = () => {
       });
     } else {
       dispatch(addToCart(product));
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          await fetch(`${API_BASE}/api/cart/add`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+            body: JSON.stringify({
+              productId: product.productID,
+              name: product.productName,
+              price: product.productPrice,
+              image: product.frontImg,
+              quantity: 1,
+            }),
+          });
+        } catch {}
+      }
       toast.success(`Added to cart!`, {
         duration: 2000,
         style: {
@@ -75,26 +91,6 @@ const LimitedEdition = () => {
           secondary: "#07bc0c",
         },
       });
-    }
-  };
-
-  const onAdd = async (product) => {
-    dispatch(addToCart(product));
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        await fetch(`${API_BASE}/api/cart/add`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-          body: JSON.stringify({
-            productId: product.productID,
-            name: product.productName,
-            price: product.productPrice,
-            image: product.frontImg,
-            quantity: 1,
-          }),
-        });
-      } catch {}
     }
   };
 
