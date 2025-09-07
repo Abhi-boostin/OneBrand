@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./Components/Authentication/ProtectedRoute";
 import CartSync from "./Components/ShoppingCart/CartSync";
 import CartHydration from "./Components/ShoppingCart/CartHydration";
+import { AuthProvider } from "./Components/Authentication/AuthContext";
 
 const Home = lazy(() => import("./Pages/Home"));
 const About = lazy(() => import("./Pages/About"));
@@ -25,9 +26,8 @@ const ShoppingCart = lazy(() => import("./Components/ShoppingCart/ShoppingCart")
 const Profile = lazy(() => import("./Components/Authentication/Profile"));
 
 const App = () => {
-  const isAuthed = () => Boolean(localStorage.getItem("token"));
   return (
-    <>
+    <AuthProvider>
       <Popup />
       <CartHydration />
       <CartSync />
@@ -38,9 +38,13 @@ const App = () => {
           <Routes>
             <Route
               path="/loginSignUp"
-              element={isAuthed() ? <Navigate to="/" replace /> : <Authentication />}
+              element={<Authentication />}
             />
             <Route path="/resetPassword" element={<ResetPass />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/BlogDetails" element={<BlogDetails />} />
 
             <Route
               path="/"
@@ -59,14 +63,6 @@ const App = () => {
               }
             />
             <Route
-              path="/about"
-              element={
-                <ProtectedRoute>
-                  <About />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/shop"
               element={
                 <ProtectedRoute>
@@ -75,34 +71,10 @@ const App = () => {
               }
             />
             <Route
-              path="/contact"
-              element={
-                <ProtectedRoute>
-                  <Contact />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/blog"
-              element={
-                <ProtectedRoute>
-                  <Blog />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/product"
               element={
                 <ProtectedRoute>
                   <ProductDetails />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/BlogDetails"
-              element={
-                <ProtectedRoute>
-                  <BlogDetails />
                 </ProtectedRoute>
               }
             />
@@ -128,7 +100,7 @@ const App = () => {
         <Footer />
         <Toaster />
       </BrowserRouter>
-    </>
+    </AuthProvider>
   );
 };
 
