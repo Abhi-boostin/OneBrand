@@ -1,8 +1,8 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
-import Header from "../src/Components/Header/Navbar";
-import Footer from "../src/Components/Footer/Footer";
+import Header from "./Components/Header/Navbar";
+import Footer from "./Components/Footer/Footer";
 import ScrollToTop from "./Components/ScrollButton/ScrollToTop";
 import Popup from "./Components/PopupBanner/Popup";
 import { Toaster } from "react-hot-toast";
